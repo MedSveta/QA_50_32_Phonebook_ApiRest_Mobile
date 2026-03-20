@@ -9,7 +9,7 @@ public class PropertiesReader {
     public static String getProperty(String fileName, String key) {
         Properties properties = new Properties();
         try (FileInputStream fileInputStream = new FileInputStream
-                ("src/test/properties" + File.separator + fileName)) {
+                ("src/test/resources/properties" + File.separator + fileName)) {
             properties.load(fileInputStream);
             return properties.getProperty(key);
         } catch (IOException e) {

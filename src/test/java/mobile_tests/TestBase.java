@@ -16,9 +16,7 @@ public class TestBase {
     }
 
     @Test
-    public void start(){
-
-    }
+    public void start(){}
 
     @AfterMethod(enabled = false)
     public void tearDown(){

@@ -23,7 +23,5 @@ public class BaseScreen {
                 .until(ExpectedConditions.textToBePresentInElement(element, text));
     }
 
-    public void pause(int time){
 
-    }
 }

@@ -5,6 +5,7 @@ import org.testng.annotations.Test;
 import screens.SplashScreen;
 
 public class SplashScreenTests extends TestBase{
+
     @Test
     public void splashScreenPositiveTest(){
         SplashScreen splashScreen = new SplashScreen(driver);

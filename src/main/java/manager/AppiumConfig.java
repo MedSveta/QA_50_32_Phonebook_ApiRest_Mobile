@@ -2,13 +2,13 @@ package manager;
 
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.android.options.UiAutomator2Options;
-
 import java.net.MalformedURLException;
 import java.net.URL;
 
 import static utils.PropertiesReader.*;
 
 public class AppiumConfig {
+
     public static AppiumDriver createAppiumDriver(String fileName) {
         UiAutomator2Options options = new UiAutomator2Options()
                 .setPlatformName(getProperty(fileName, "os"))

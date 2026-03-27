@@ -9,6 +9,7 @@ import screens.ErrorScreen;
 import screens.LoginRegistrationScreen;
 import screens.SplashScreen;
 
+import static utils.PropertiesReader.getProperty;
 import static utils.UserFactory.*;
 
 public class RegistrationTests extends TestBase {
@@ -37,5 +38,35 @@ public class RegistrationTests extends TestBase {
         loginRegistrationScreen.clickBtnRegistration();
         Assert.assertTrue(new ErrorScreen(driver).validateTextInError
                 ("username=must not be blank", 5));
+    }
+
+    @Test
+    public void registrationNegative_WithSpaceEmailTest() {
+        User user = positiveUser();
+        user.setUsername(" ");
+        loginRegistrationScreen.typeLoginRegistrationForm(user);
+        loginRegistrationScreen.clickBtnRegistration();
+//        Assert.assertTrue(new ErrorScreen(driver).validateTextInCrashScreen
+//                ("Open app again", 5));
+        Assert.assertTrue(new ErrorScreen(driver).isAppStopDisplay());
+    }
+
+    @Test
+    public void registrationNegative_EmptyFieldsTest() {
+        User user = new User("", "");
+        loginRegistrationScreen.typeLoginRegistrationForm(user);
+        loginRegistrationScreen.clickBtnRegistration();
+        Assert.assertTrue(new ErrorScreen(driver).isAppStopDisplay());
+    }
+
+    @Test
+    public void registrationNegative_AlreadyExistsUser_Test(){
+        User user  =  new User(getProperty("base.properties",
+                "login"), getProperty("base.properties",
+                "password"));
+        loginRegistrationScreen.typeLoginRegistrationForm(user);
+        loginRegistrationScreen.clickBtnRegistration();
+        Assert.assertTrue(new ErrorScreen(driver).validateTextInError
+                ("User already exists", 5));
     }
 }

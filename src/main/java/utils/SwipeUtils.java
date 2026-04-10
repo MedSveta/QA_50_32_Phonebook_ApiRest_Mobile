@@ -2,6 +2,8 @@ package utils;
 
 import io.appium.java_client.AppiumDriver;
 import org.openqa.selenium.Dimension;
+import org.openqa.selenium.Rectangle;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.PointerInput;
 import org.openqa.selenium.interactions.Sequence;
 
@@ -46,6 +48,36 @@ public interface SwipeUtils {
                 .addAction(finger.createPointerMove(Duration.ZERO, PointerInput.Origin.viewport(), startX, startY))
                 .addAction(finger.createPointerDown(PointerInput.MouseButton.LEFT.asArg()))
                 .addAction(finger.createPointerMove(Duration.ofMillis(500), PointerInput.Origin.viewport(), endX, endY))
+                .addAction(finger.createPointerUp(PointerInput.MouseButton.LEFT.asArg()));
+        driver.perform(Collections.singletonList(swipe));
+    }
+
+    default void swipeInsideElement(AppiumDriver driver, WebElement element,
+                                    Direction direction) {
+        Rectangle size = element.getRect();
+        int startX, endX;
+        int middleY = size.y + size.height / 2;
+        switch (direction) {
+            case RIGHT -> {
+                startX = (int) (size.width * 0.2);
+                endX = (int) (size.width * 0.8);
+
+            }
+            case LEFT -> {
+                startX = (int) (size.width * 0.8);
+                endX = (int) (size.width * 0.2);
+
+            }
+            default -> throw new IllegalArgumentException
+                    ("Wrong direction --> " + direction);
+        }
+
+        PointerInput finger = new PointerInput
+                (PointerInput.Kind.TOUCH, "finger");
+        Sequence swipe = new Sequence(finger, 1)
+                .addAction(finger.createPointerMove(Duration.ZERO, PointerInput.Origin.viewport(), startX, middleY))
+                .addAction(finger.createPointerDown(PointerInput.MouseButton.LEFT.asArg()))
+                .addAction(finger.createPointerMove(Duration.ofMillis(500), PointerInput.Origin.viewport(), endX, middleY))
                 .addAction(finger.createPointerUp(PointerInput.MouseButton.LEFT.asArg()));
         driver.perform(Collections.singletonList(swipe));
     }

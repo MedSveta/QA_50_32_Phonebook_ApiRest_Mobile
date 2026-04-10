@@ -9,6 +9,7 @@ import utils.Direction;
 import utils.SwipeUtils;
 
 import java.time.Duration;
+import java.util.List;
 
 public class ContactListScreen extends BaseScreen implements SwipeUtils {
     public ContactListScreen(AppiumDriver driver) {
@@ -23,6 +24,8 @@ public class ContactListScreen extends BaseScreen implements SwipeUtils {
     WebElement messageContactWasAdded;
     @AndroidFindBy(id = "android:id/button1")
     WebElement btnYes;
+    @AndroidFindBy(xpath = "(//*[@resource-id='com.sheygam.contactapp:id/rowContainer'])")
+    List<WebElement> contactListScreen;
 
     public boolean validateTextInContactListScreenAfterRegistration
             (String text, int time) {
@@ -47,5 +50,10 @@ public class ContactListScreen extends BaseScreen implements SwipeUtils {
         swipeScreen(driver, Direction.RIGHT);
         btnYes.click();
     }
-
+    public void deleteFirstContact(){
+        new WebDriverWait(driver, Duration.ofSeconds(2))
+                .until(ExpectedConditions.visibilityOf(btnPlus));
+        swipeInsideElement(driver, contactListScreen.get(0), Direction.RIGHT);
+        btnYes.click();
+    }
 }

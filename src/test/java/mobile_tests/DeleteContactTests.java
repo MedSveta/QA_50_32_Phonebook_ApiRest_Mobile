@@ -2,6 +2,7 @@ package mobile_tests;
 
 import dto.User;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 import screens.AddNewContactScreen;
 import screens.ContactListScreen;
 import screens.LoginRegistrationScreen;
@@ -21,5 +22,10 @@ public class DeleteContactTests extends TestBase{
         loginRegistrationScreen.typeLoginRegistrationForm(user);
         loginRegistrationScreen.clickBtnLogin();
         contactListScreen = new ContactListScreen(driver);
+    }
+
+    @Test
+    public void  deleteContactPositiveTest(){
+        contactListScreen.deleteContactMiddle();
     }
 }

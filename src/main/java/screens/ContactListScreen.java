@@ -3,8 +3,14 @@ package screens;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.pagefactory.AndroidFindBy;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import utils.Direction;
+import utils.SwipeUtils;
 
-public class ContactListScreen extends BaseScreen {
+import java.time.Duration;
+
+public class ContactListScreen extends BaseScreen implements SwipeUtils {
     public ContactListScreen(AppiumDriver driver) {
         super(driver);
     }
@@ -15,6 +21,8 @@ public class ContactListScreen extends BaseScreen {
     WebElement btnPlus;
     @AndroidFindBy(xpath = "//android.widget.Toast[@text='Contact was added!']")
     WebElement messageContactWasAdded;
+    @AndroidFindBy(id = "android:id/button1")
+    WebElement btnYes;
 
     public boolean validateTextInContactListScreenAfterRegistration
             (String text, int time) {
@@ -32,4 +40,12 @@ public class ContactListScreen extends BaseScreen {
     public boolean isTextInMessageContactWasAddedPresent(String text, int time){
         return isTextInElementPresent(messageContactWasAdded, text, time);
     }
+
+    public void deleteContactMiddle(){
+        new WebDriverWait(driver, Duration.ofSeconds(2))
+                .until(ExpectedConditions.visibilityOf(btnPlus));
+        swipeScreen(driver, Direction.RIGHT);
+        btnYes.click();
+    }
+
 }

@@ -1,5 +1,6 @@
 package mobile_tests;
 
+import dto.Contact;
 import dto.ContactsDto;
 import dto.TokenDto;
 import dto.User;
@@ -13,6 +14,7 @@ import screens.AddNewContactScreen;
 import screens.ContactListScreen;
 import screens.LoginRegistrationScreen;
 import utils.BaseApi;
+import utils.ContactFactory;
 
 import static utils.PropertiesReader.getProperty;
 
@@ -24,14 +26,22 @@ public class DeleteContactTests extends TestBase {
 
     @BeforeMethod
     public void login() {
-        User user = new User(getProperty("base.properties", "login"),
-                getProperty("base.properties", "password"));
+//        User user = new User(getProperty("base.properties", "login"),
+//                getProperty("base.properties", "password"));
+        User user = new User("tesla@yandex.il","Nobug@$#^&*!1");
+        Contact contact = ContactFactory.positiveContact();
         tokenDto = AuthenticationController.requestRegLogin(user, BaseApi.LOGIN_URL)
                 .as(TokenDto.class);
         Response response = ContactController.requestGetAllUserContacts(tokenDto.getToken());
         System.out.println(response.getStatusLine());
-        if(response.getStatusCode() == 200)
+        if(response.getStatusCode() == 200) {
             contactsDtoBeforeDelete = response.as(ContactsDto.class);
+            if(contactsDtoBeforeDelete.getContacts().isEmpty()){
+                ContactController.requestAddNewContact(contact, tokenDto.getToken());
+                contactsDtoBeforeDelete = ContactController.requestGetAllUserContacts
+                        (tokenDto.getToken()).as(ContactsDto.class);
+            }
+        }
         loginRegistrationScreen = new LoginRegistrationScreen(driver);
         loginRegistrationScreen.typeLoginRegistrationForm(user);
         loginRegistrationScreen.clickBtnLogin();
